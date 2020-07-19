@@ -45,8 +45,8 @@
   - [Setup](#setup)
   - [Local development](#local-development)
   - [Including NPM packages](#including-npm-packages)
-    - [Library dependencies -- <root_dir>/package.**json](#library-dependencies----rootdirpackagejson)
-    - [Storybook dependencies -- <root_dir>/stories/package.json](#storybook-dependencies----rootdirstoriespackagejson)
+    - [Library dependencies -- <root_dir>/package.**json](#library-dependencies----root_dirpackagejson)
+    - [Storybook dependencies -- <root_dir>/stories/package.json](#storybook-dependencies----root_dirstoriespackagejson)
   - [Lint](#lint)
   - [Test](#test)
   - [Build](#build)
@@ -112,6 +112,7 @@ Nothing new here - we are using an array of object literals and properties to de
 | name     | string, component or number | no       | the display name of our Column e.g. 'Name'                                                                    |
 | selector | string or function | no      | a data set property in dot notation. e.g. <br /> `property1.nested1.nested2` <br /> `property1.items[0].nested2` <br /> or as a function e.g. <br /> `row => row.timestamp`. A `selector` is required anytime you want to display data but can be ommitted if your column does not require showing data (e.g. an actions column) |
 | sortable | bool   | no       | if the column is sortable. note that `selector` is required for the column to sort                                                            |
+| sortFunction | function | no | custom sorting function e.g. `(rowA, rowB) => rowA.myIndex - rowB.myIndex` (see [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)) |
 | format   | func   | no       | apply formatting to the selector e.g. `row => moment(row.timestamp).format('lll')` without changing the actual selector value                                        |
 | cell     | func   | no       | for ultimate control use `cell` to render your own custom component! e.g `row => <h2>{row.title}</h2>` <br /> **negates  `format`*- |
 | grow     | number | no       | [flex-grow](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow) of the column. This is useful if you want a column to take up more width than its relatives (without having to set widths explicitly).  this will be affected by other columns where you have explicitly set widths |
@@ -129,6 +130,7 @@ Nothing new here - we are using an array of object literals and properties to de
 | omit     | bool   | no       | omits the column from the table. useful if you need to hide access to data. |
 | style    | object | no       | allows you to customize the css of the cell using css-in-js [style objects](https://www.styled-components.com/docs/advanced#style-objects) |
 | conditionalCellStyles    | array   | no     | allows an array of [conditional style objects](#16210-conditional-style-object) to conditionally apply css styles to a cell |
+| id       | string or number | no       | in most cases you should not need to set a column `id` as RDT will auto generate one for each column. However, when developing an SSR app you may encounder an `id did not match` warning. In this case, you can explicitly set the `id` to fix the warning |
 
 #### column.hide media presets
 
@@ -148,8 +150,8 @@ When the breakpoint is reached the column will be hidden. These are the built-in
 |--------------------------|---------------------|----------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | title | string or component | no |  | The Title displayed in the Table Header |
 | columns | array<Columns> | yes | [] | The column configuration |
-| data | array<Object> | no | [] | it is **highly recommended** that your data has a unique identifier (keyField). The default `keyField` is `id`. If you need to override this value then see `keyField` |
-| keyField | string | no | 'id' | **Your data should have a unique identifier.*- By default, React Data Table looks for an `id` property for each item in your data. You must match `keyField` to your identifier key, especially if you want to manage row state at a later time or use the expander feature. If a unique `id` is not present, React Data Table will use the row index and by reference checks as fallbacks, however, this is highly discouraged |
+| data | array<Object> | no | [] | It's **highly recommended** that your data have a unique identifier (keyField). The default `keyField` is `id`. If you need to override this value then see `keyField` |
+| keyField | string | no | 'id' | **Your data should have a unique identifier**.  By default, React Data Table looks for an `id` property on each item in your data. You must match `keyField` to that identifier key, especially if you want to manage row state at a later time or use the expander feature. If a unique `id` is not present, React Data Table will attempt to use the row index and by reference checks as fallbacks, however, certain features will not work correctly. |
 | striped | bool | no | false | stripe color the odd rows |
 | highlightOnHover | bool | no | false | if rows are to be highlighted on hover |
 | pointerOnHover | bool | no | false | if rows show a point icon on hover |
@@ -237,7 +239,7 @@ When the breakpoint is reached the column will be hidden. These are the built-in
 | noHeader | bool | no | false | Removes the table header. `title`, `contextTitle` and `contextActions` will be ignored |
 | fixedHeader | bool | no | false | Makes the table header fixed allowing you to scroll the table body |
 | fixedHeaderScrollHeight | string | no | 100vh | In order for fixedHeader to work this property allows you to set a static height to the TableBody. height must be a fixed value |
-| subHeader | component or array of components | no | false | Show a sub header between the table and table header
+| subHeader | bool | no | false | Show a sub header between the table and table header
 | subHeaderAlign | string | no | right | Align the sub header content (left, right, center)
 | subHeaderWrap | bool | no | true | Whether the sub header content should wrap
 | subHeaderComponent |  component or array of components | no | [] | A component you want to render |

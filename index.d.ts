@@ -101,9 +101,11 @@ export interface IDataTableProps<T> {
 }
 
 export interface IDataTableColumn<T> {
+  id?: string | number;
   name: string | number | React.ReactNode;
   selector?: string | ((row: T) => React.ReactNode);
   sortable?: boolean;
+  sortFunction?: (a: T, b: T) => number;
   format?: (row: T) => React.ReactNode;
   cell?: (row: T) => React.ReactNode;
   grow?: number;
