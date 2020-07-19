@@ -275,9 +275,6 @@ const DataTable = memo(({
 
     return data.length > 0 && !progressPending;
   };
-
-  const showSelectAll = persistSelectedOnPageChange || selectableRowsNoSelectAll;
-
   return (
     <ThemeProvider theme={currentTheme}>
       <DataTableProvider initialState={init}>
@@ -323,7 +320,7 @@ const DataTable = memo(({
                     disabled={progressPending || data.length === 0}
                   >
                     {selectableRows && (
-                      showSelectAll
+                      selectableRowsNoSelectAll
                         ? <CellBase style={{ flex: '0 0 48px' }} role="columnheader" />
                         : <TableColCheckbox role="columnheader" />
                     )}

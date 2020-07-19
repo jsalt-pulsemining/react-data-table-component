@@ -48,7 +48,7 @@ module.exports = {
         plugins: ['react', '@typescript-eslint'],
         rules: {
           indent: ['error', 2, { 'SwitchCase': 1 }],
-          'linebreak-style': ['error', 'unix'],
+          'linebreak-style': ['error', 'windows'],
           quotes: ['error', 'single'],
           'comma-dangle': ['error', 'always-multiline'],
           '@typescript-eslint/no-explicit-any': 0,
